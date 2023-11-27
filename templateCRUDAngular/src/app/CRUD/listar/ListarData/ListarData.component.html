@@ -1,0 +1,77 @@
+<div class="list row">
+  <div class="col-md-6">
+    <h4>Listado de datos</h4>
+    <div *ngIf="!Data">
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Cargando...</span>
+        </div>
+      </div>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let branchOffice of Data; let i = index" [class.active]="i == currentIndex"
+        (click)="setActiveData(branchOffice, i)">
+        <h5>{{ branchOffice.Description }} - {{ branchOffice.Code }}</h5>
+      </li>
+    </ul>
+    <a class="m-3 btn btn-sm btn-dark" routerLink="/sucursales/crear">
+      Registrar Sucursal
+    </a>
+  </div>
+  <div class="col-md-6">
+    <div *ngIf="currentData?.BranchOfficeId">
+      <h4> {{ currentData?.Description }}</h4>
+      <div>
+        <label><strong>Dirección</strong>
+          {{ currentData?.Address }}
+        </label>
+      </div>
+      <div>
+        <label><strong>Identificación:</strong>
+          {{ currentData?.Identification }}
+        </label>
+      </div>
+      <div>
+        <label><strong>Moneda:</strong>
+          {{ currentData?.CurrencyDescription }}
+        </label>
+      </div>
+      <div>
+        <label><strong>Fecha de creación:</strong>
+          {{ currentData?.DateCreatedString }}
+        </label>
+      </div>
+      <div>
+        <label><strong>Fecha de actualización:</strong>
+          {{ currentData?.DateUpdatedString }}
+        </label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm mr-4" (click)="editCurrent(currentData?.BranchOfficeId)">
+        Editar
+      </button>
+      <button type="submit" class="btn btn-danger btn-sm" (click)="deleteCurrent(currentData?.BranchOfficeId)">
+        Eliminar
+      </button>
+    </div>
+    <div *ngIf="!currentData?.BranchOfficeId">
+      <div class="alert alert-info mt-5">
+        <div *ngIf="!Data">
+          <strong>No hay data.</strong>
+        </div>
+        <div *ngIf="Data">
+          <div *ngIf="Data.length > 0">
+            <div class="text-center">
+              <strong>Haga clic en una sucursal para ver más
+                información.</strong>
+            </div>
+          </div>
+          <div *ngIf="Data.length == 0">
+            <div class="text-center">
+              <strong>No hay sucursales.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

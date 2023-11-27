@@ -8,8 +8,8 @@ namespace TemplateCRUDNet7.Context
         public TemplateContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<BranchOffice> TableBranchOffices => Set<BranchOffice>();
-        public DbSet<Currency> TableCurrency => Set<Currency>();
+        public DbSet<Tasks> TableTasks => Set<Tasks>();
+        public DbSet<User> TableUsers => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,38 +18,30 @@ namespace TemplateCRUDNet7.Context
         }
         private static void FillData(ModelBuilder modelBuilder)
         {
-            var Currencies = new List<Currency>
+            var users = new List<User>
             {
-                new Currency { Id = Guid.NewGuid(), Acronym = "USD", Description = "Dólar estadounidense" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "EUR", Description = "Euro" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "JPY", Description = "Yen japonés" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "GBP", Description = "Libra esterlina" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "AUD", Description = "Dólar australiano" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "CAD", Description = "Dólar canadiense" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "CHF", Description = "Franco suizo" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "CNY", Description = "Yuan chino" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "SEK", Description = "Corona sueca" },
-                new Currency { Id = Guid.NewGuid(), Acronym = "NZD", Description = "Dólar neozelandés" }
+                new User { Id = Guid.NewGuid(), Name = "Diego Parra",Email = "diegop177@hotmail.com", Password = "diego1234" },
+                new User { Id = Guid.NewGuid(), Name = "Laura", Email = "laura@gmail.com", Password = "laura1234" },
+                new User { Id = Guid.NewGuid(), Name = "Pilar", Email = "pilar@gmail.com", Password = "pilar1234" }
             };
 
             string[] Summaries = new[]
                      {
-                 "Suntea", "Boka", "Bonice", "Nutribela10", "Popetas", "Del Fogón", "Ricostilla", "La sopera", "Quipitos"
+                 "hacer el login", "hacer el registro", "generar el jwt", "eliminar una tarea", "agregar una tarea al backlog"
              };
 
-            var data = Enumerable.Range(1, 5).Select(index => new BranchOffice
+            var data = Enumerable.Range(1, 50).Select(index => new Tasks
             {
                 Id = Guid.NewGuid(),
-                Code = int.Parse($"000{index}"),
+                IsCompleted = index % 2 == 0 ? true : false,
                 DateCreated = DateTime.Now.AddDays(index),
                 Description = Summaries[Random.Shared.Next(Summaries.Length)],
-                Address = $"Address {index}",
-                Identification = $"Identification {index}",
-                CurrencyId = Currencies.Select(x => x.Id).ToList()[Random.Shared.Next(Currencies.Count)]
+                NameTask = $"Tarea {index}",
+                UserId = users.Select(x => x.Id).ToList()[Random.Shared.Next(users.Count)]
             });
 
-            modelBuilder.Entity<Currency>().HasData(Currencies);
-            modelBuilder.Entity<BranchOffice>()
+            modelBuilder.Entity<User>().HasData(users);
+            modelBuilder.Entity<Tasks>()
             .HasData(data);
         }
     }

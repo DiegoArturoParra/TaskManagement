@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Net;
 using TemplateCRUDNet7.Helpers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TemplateCRUDNet7.Dtos
 {
@@ -9,7 +8,7 @@ namespace TemplateCRUDNet7.Dtos
     {
         public string Message { get; set; }
         public T Data { get; set; }
-        public ImmutableArray<ErrorDto> Errors { get; set; }
+        public IList<ErrorDto> Errors { get; set; }
         public HttpStatusCode StatusCode { get; set; }
     }
     public class Responses
@@ -85,12 +84,25 @@ namespace TemplateCRUDNet7.Dtos
             return new ResponseDto<T>
             {
                 Data = default,
-                Errors = new ImmutableArray<ErrorDto>()
-                {
-                    new ErrorDto(message)
-                },
+                Errors = new List<ErrorDto>()
+                        {
+                            new ErrorDto(message)
+                        },
                 Message = string.Empty,
                 StatusCode = HttpStatusCode.NotFound
+            };
+        }
+        public static ResponseDto<T> ResponseUnAuthorized<T>(string message)
+        {
+            return new ResponseDto<T>
+            {
+                Data = default,
+                Errors = new List<ErrorDto>()
+                        {
+                            new ErrorDto(message)
+                        },
+                Message = string.Empty,
+                StatusCode = HttpStatusCode.Unauthorized
             };
         }
     }

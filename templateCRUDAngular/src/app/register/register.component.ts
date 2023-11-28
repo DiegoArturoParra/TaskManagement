@@ -1,48 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CrudService } from '../../services/crud.service';
+import { AccountService } from '../CRUD/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserRegisterDto } from '../../models/UserDto';
 import { ErrorDto } from 'src/utils/Response';
 
 @Component({
-  selector: 'app-CreateUpdate',
-  templateUrl: './CreateUpdate.component.html',
-  styleUrls: ['./CreateUpdate.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class CreateUpdateComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
-  listaCurrencies!: UserRegisterDto[];
   public valForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private _crudService: CrudService,
+    private _accountService: AccountService,
     private router: Router, private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.valForm = this.fb.group({
-      Description: this.fb.control(null, [Validators.required]),
-      TaskName: this.fb.control(null, [Validators.required]),
+      Name: this.fb.control(null, [Validators.required]),
+      Email: this.fb.control(null, [Validators.required, Validators.email]),
+      Password: this.fb.control(null, [Validators.required]),
     });
   }
 
-  get TaskName() {
-    return this.valForm.get('TaskName');
+  navigateLogin() {
+    this.router.navigate(['/']);
   }
-
-  get Description() {
-    return this.valForm.get('Description');
-  }
-
-  devolver() {
-    this.router.navigate(['/gestion-tareas']);
-  }
-  addTask() {
-    this._crudService.create(this.valForm?.value).subscribe(
+  register() {
+    this._accountService.register(this.valForm?.value).subscribe(
       {
         next: response => {
-          this.router.navigate(['/', 'gestion-tareas']).then(
+          this.router.navigate(['/']).then(
             (nav) => {
               alert(response.Message);
             },
@@ -57,5 +48,15 @@ export class CreateUpdateComponent implements OnInit {
         }
       }
     );
+  }
+
+  get Email() {
+    return this.valForm.get('Email');
+  }
+  get Password() {
+    return this.valForm.get('Password');
+  }
+  get Name() {
+    return this.valForm.get('Name');
   }
 }

@@ -8,6 +8,18 @@ namespace TemplateCRUDNet7.Dtos
         public string Email { get; set; }
         public string Name { get; set; }
     }
+    public class UserRegisterDto
+    {
+        [Required]
+        [MaxLength(60)]
+        public string Email { get; set; }
+        [Required]
+        [MaxLength(60)]
+        public string Password { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; }
 
-    public record class UserRegisterDto([Required][MaxLength(60)] string Email, [Required][MaxLength(60)] string Password, [Required][MaxLength(100)] string Name);
+    }
+
 }

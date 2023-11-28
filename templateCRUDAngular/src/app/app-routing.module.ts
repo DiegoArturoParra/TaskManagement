@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListarDataComponent } from './CRUD/listar/ListarData/ListarData.component';
 import { CreateUpdateComponent } from './CRUD/Formulario/CreateUpdate/CreateUpdate.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
-  { path: 'sucursales', component: ListarDataComponent },
-  { path: 'sucursales/crear', component: CreateUpdateComponent },
-  { path: 'sucursales/actualizar/:BranchOfficeId', component: CreateUpdateComponent },
+  { path: 'gestion-tareas', component: ListarDataComponent },
+  { path: 'gestion-tareas/crear', component: CreateUpdateComponent },
+  { path: 'gestion-tareas/actualizar/:TaskId', component: CreateUpdateComponent },
+  { path: 'registrarse', component: RegisterComponent },
+  { path: '', component: LoginComponent },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

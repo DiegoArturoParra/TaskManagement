@@ -8,3 +8,7 @@ export interface ResponseDto<T> {
   Errors: ErrorDto[];
   StatusCode: number;
 }
+
+export interface Unit {
+
+}

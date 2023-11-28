@@ -7,13 +7,19 @@ import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListarDataComponent } from './CRUD/listar/ListarData/ListarData.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { PerfilUserComponent } from './perfil-user/perfil-user.component';
 
 @NgModule({
-  declarations: [
+  declarations: [			
     AppComponent,
     ListarDataComponent,
-    CreateUpdateComponent
-  ],
+    CreateUpdateComponent,
+      LoginComponent,
+      RegisterComponent,
+      PerfilUserComponent
+   ],
   imports: [
     BrowserModule,
     AppRoutingModule,

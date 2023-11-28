@@ -24,6 +24,18 @@ namespace TemplateCRUDNet7.Controllers
             return StatusCode((int)response.StatusCode, response);
         }
 
+
+        [Authorize]
+        [HttpGet("info-person")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PerfilAsync()
+        {
+            var response = await _accountRepository.Perfil();
+            return StatusCode((int)response.StatusCode, response);
+        }
+
+
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]

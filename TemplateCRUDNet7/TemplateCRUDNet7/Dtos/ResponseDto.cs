@@ -54,13 +54,13 @@ namespace TemplateCRUDNet7.Dtos
                 StatusCode = HttpStatusCode.OK
             };
         }
-        public static ResponseDto<Unit> ResponseCreated()
+        public static ResponseDto<Unit> ResponseCreated(string messaje = "Creado satisfactoriamente.")
         {
             return new ResponseDto<Unit>
             {
                 Data = Unit.Value,
                 Errors = ImmutableArray<ErrorDto>.Empty,
-                Message = "Creado satisfactoriamente.",
+                Message = messaje,
                 StatusCode = HttpStatusCode.Created
             };
         }

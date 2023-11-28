@@ -19,20 +19,37 @@ namespace TemplateCRUDNet7.Repositories
         }
 
 
-        public async Task<ResponseDto<IEnumerable<TaskDetailDto>>> GetTasksByUser()
+        public async Task<ResponseDto<IEnumerable<TaskDto>>> GetTasksByUser()
         {
             var userId = _claimsHelper.GetUserId();
             var data = await _context.TableTasks.Where(y => y.IsDeleted == false & y.UserId == userId)
-                .Select(y => new TaskDetailDto
+                .Select(y => new TaskDto
                 {
                     TaskId = y.Id,
-                    IsCompleted = y.IsCompleted,
-                    Description = y.Description,
+                    TaskName = y.NameTask
                 }).ToListAsync();
-            return Responses.ResponseSuccess<IEnumerable<TaskDetailDto>>(data);
+            return Responses.ResponseSuccess<IEnumerable<TaskDto>>(data);
         }
 
+        public async Task<ResponseDto<TaskDetailDto>> GetDetailTaskByUser(Guid taskId)
+        {
+            var userId = _claimsHelper.GetUserId();
+            var isExist = await _context.TableTasks.AnyAsync(y => y.UserId == userId && y.Id == taskId);
+            if (!isExist)
+                return Responses.ResponseNotFound<TaskDetailDto>("No se encontro la tarea del usuario.");
 
+            var data = await _context.TableTasks.Where(y => y.IsDeleted == false & y.UserId == userId && y.Id == taskId)
+               .Select(y => new TaskDetailDto
+               {
+                   TaskId = y.Id,
+                   DateCreated = y.DateCreated,
+                   DateUpdated = y.DateUpdated,
+                   Description = y.Description,
+                   IsCompleted = y.IsCompleted
+               }).FirstOrDefaultAsync();
+            return Responses.ResponseSuccess(data);
+
+        }
 
         public async Task<ResponseDto<Unit>> CreateTask(TaskCreateDto dto)
         {
@@ -47,7 +64,7 @@ namespace TemplateCRUDNet7.Repositories
                     IsCompleted = false,
                     NameTask = dto.TaskName,
                 };
-                var validate = ValidateDataToCreated(entityTask);
+                var validate = await ValidateDataToCreatedAsync(entityTask);
                 if (validate != null)
                     return validate;
 
@@ -103,15 +120,17 @@ namespace TemplateCRUDNet7.Repositories
             }
         }
 
-        private ResponseDto<Unit> ValidateDataToCreated(Tasks entity)
+        private async Task<ResponseDto<Unit>> ValidateDataToCreatedAsync(Tasks entity)
         {
             List<ErrorDto> errores = new();
-            var existNameTask = _context.TableTasks.Any(x => x.NameTask.ToUpper() == entity.NameTask.ToUpper() && x.UserId == entity.UserId);
+            var existNameTask = await _context.TableTasks.AnyAsync(x => x.NameTask.ToUpper() == entity.NameTask.ToUpper() && x.UserId == entity.UserId);
 
             if (existNameTask)
                 errores.Add(new ErrorDto("Ya existe una tarea con el mismo nombre."));
 
             return errores.Any() ? Responses.ResponseConflict(errores) : null;
         }
+
+
     }
 }

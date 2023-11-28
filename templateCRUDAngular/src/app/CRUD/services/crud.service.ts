@@ -1,40 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { ResponseDto, Unit } from 'src/utils/Response';
 import { appSettings } from 'src/utils/constants';
-import { ResponseDto } from 'src/utils/Response';
-import { BranchDetailOfficeDto, BranchOfficeDto } from '../models/BranchOfficeDto';
-import { CurrencyDto } from '../models/CurrencyDto';
+import { TaskDetailDto, TaskDto } from '../models/TaskDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
-  private url = `${appSettings.url_api_app}`;
+  private url = `${appSettings.url_api_app}/task-user`;
 
   constructor(private http: HttpClient) { }
 
-  getData(): Observable<ResponseDto<BranchOfficeDto[]>> {
-    return this.http.get<ResponseDto<BranchOfficeDto[]>>(`${this.url}/list`);
+  getListTasksOfUser(): Observable<ResponseDto<TaskDto[]>> {
+    return this.http.get<ResponseDto<TaskDto[]>>(`${this.url}/list`);
   }
 
-  create(data: any): Observable<any> {
-    return this.http.post(`${this.url}/create`, data);
+  create(data: TaskDto): Observable<ResponseDto<Unit>> {
+    return this.http.post<ResponseDto<Unit>>(`${this.url}/create`, data);
   }
 
-  update(data: any, branchOfficeId?: string): Observable<any> {
-    return this.http.put(`${this.url}/update/${branchOfficeId}`, data);
+  completedTask(taskId?: string): Observable<ResponseDto<Unit>> {
+    return this.http.put<ResponseDto<Unit>>(`${this.url}/completed/${taskId}`, null);
   }
 
-  softDelete(branchOfficeId?: string): Observable<any> {
-    return this.http.put(`${this.url}/soft-delete/${branchOfficeId}`, null);
+  softDelete(taskId?: string): Observable<ResponseDto<Unit>> {
+    return this.http.put<ResponseDto<Unit>>(`${this.url}/soft-delete/${taskId}`, null);
   }
 
-  getDataCurrencies(): Observable<ResponseDto<CurrencyDto[]>> {
-    return this.http.get<ResponseDto<CurrencyDto[]>>(`${this.url}/list-currencies`);
-  }
-
-  getDetailData(id?: string): Observable<ResponseDto<BranchDetailOfficeDto>> {
-    return this.http.get<ResponseDto<BranchDetailOfficeDto>>(`${this.url}/${id}`);
+  getDetailTaskIdOfUser(id?: string): Observable<ResponseDto<TaskDetailDto>> {
+    return this.http.get<ResponseDto<TaskDetailDto>>(`${this.url}/detail/${id}`);
   }
 }

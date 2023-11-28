@@ -27,7 +27,17 @@ namespace TemplateCRUDNet7.Controllers
             return Ok(listado);
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("detail/{TaskId}")]
+        public async Task<IActionResult> TaskOfUser(Guid TaskId)
+        {
+            var task = await _repository.GetDetailTaskByUser(TaskId);
+            return Ok(task);
+        }
+
         [HttpPost]
+        [Authorize]
         [Route("create")]
         public async Task<IActionResult> CreateTaskByUser([FromBody] TaskCreateDto createTask)
         {
@@ -36,8 +46,18 @@ namespace TemplateCRUDNet7.Controllers
         }
 
         [HttpPut]
+        [Authorize]
+        [Route("completed/{id}")]
+        public async Task<IActionResult> CompletedTask(Guid id)
+        {
+            var response = await _repository.CompletedTask(id);
+            return StatusCode((int)response.StatusCode, response);
+        }
+
+        [HttpPut]
+        [Authorize]
         [Route("soft-delete/{id}")]
-        public async Task<IActionResult> UpdatebranchOffice(Guid id)
+        public async Task<IActionResult> SoftDeleteTask(Guid id)
         {
             var response = await _repository.SoftDeleteTask(id);
             return StatusCode((int)response.StatusCode, response);

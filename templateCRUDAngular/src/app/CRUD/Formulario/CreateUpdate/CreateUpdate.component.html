@@ -1,74 +1,37 @@
-<div>
-  <div class="submit-form">
-    <form id="formulario" [formGroup]="valForm" class="needs-validation text-sm mt-4" novalidate>
-      <label for="Descpripcion" class="font-weight-bold">Descpripción de la sucursal</label>
-      <small class="text-danger mr-3" title="requerido"> (*)</small>
+<div class="submit-form">
+  <form id="formulario" [formGroup]="valForm" class="needs-validation text-sm mt-4" novalidate>
+    <div class="form-group">
+      <label>Nombre</label>
+      <small class="text-danger" title="requerido"> (*)</small>
       <label class="form-check-label text-muted">
-        Máximo 250 caracteres.
+        Máximo 150 caracteres.
       </label>
-      <div class="form-group">
-        <textarea class="form-control form-control-sm" formControlName="Description"
-          placeholder="ingrese la descripción de la sucursal" maxlength="250"></textarea>
-      </div>
-      <div class="text-danger" *ngIf="(Description?.dirty || Description?.touched) && !Description?.valid">
-        <span *ngIf="Description?.hasError('required')">
-          El campo es requerido.
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label>Codigo</label>
-        <small class="text-danger" title="requerido"> (*)</small>
-        <input type="number" class="form-control" formControlName="Code" />
-      </div>
-      <div class="text-danger" *ngIf="(Code?.dirty || Code?.touched) && !Code?.valid">
-        <span *ngIf="Code?.hasError('required')">
-          El campo es requerido.
-        </span>
-      </div>
-      <div class="form-group">
-        <label>Identificación</label>
-        <small class="text-danger mr-3" title="requerido"> (*)</small>
-        <label class="form-check-label text-muted">
-          Máximo 50 caracteres.
-        </label>
-        <input type="text" maxlength="50" class="form-control" formControlName="Identification" />
-      </div>
-      <div class="text-danger" *ngIf="(Identification?.dirty || Identification?.touched) && !Identification?.valid">
-        <span *ngIf="Identification?.hasError('required')">
-          El campo es requerido.
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label>Dirección</label>
-        <small class="text-danger mr-3" title="requerido"> (*)</small>
-        <label class="form-check-label text-muted">
-          Máximo 250 caracteres.
-        </label>
-        <input type="text" maxlength="250" class="form-control" formControlName="Address" />
-      </div>
-      <div class="text-danger" *ngIf="(Address?.dirty || Address?.touched) && !Address?.valid">
-        <span *ngIf="Address?.hasError('required')">
-          El campo es requerido.
-        </span>
-      </div>
-
-      <div class="form-group">
-        <label>Ingrese la moneda</label>
-        <small class="text-danger" title="requerido"> (*)</small>
-        <select class="form-control" formControlName="CurrencyId">
-          <option *ngFor="let objeto of listaCurrencies" [ngValue]="objeto.CurrencyId">
-            {{ objeto.CurrencyDescription }}
-          </option>
-        </select>
-      </div>
-      <div class="text-sm-left mb-2">
-        <button class="btn btn-link" type="submit" (click)="devolver()">Cancelar</button>
-      </div>
-      <div class="text-sm-right mb-2">
-        <button class="btn btn-primary" type="submit" (click)="addBranchOffice()"
-          [disabled]="valForm.invalid">Guardar</button>
-      </div>
-    </form>
-  </div>
+      <input class="form-control form-control-sm" maxlength="150" formControlName="TaskName" />
+    </div>
+    <div class="text-danger" *ngIf="(TaskName?.dirty || TaskName?.touched) && !TaskName?.valid">
+      <span *ngIf="TaskName?.hasError('required')">
+        El campo es requerido.
+      </span>
+    </div>
+    <label for="Descpripcion" class="font-weight-bold">Descripción de la tarea</label>
+    <small class="text-danger mr-3" title="requerido"> (*)</small>
+    <label class="form-check-label text-muted">
+      Máximo 250 caracteres.
+    </label>
+    <div class="form-group">
+      <textarea class="form-control form-control-sm" formControlName="Description"
+        placeholder="ingrese la descripción de la tarea" maxlength="250"></textarea>
+    </div>
+    <div class="text-danger" *ngIf="(Description?.dirty || Description?.touched) && !Description?.valid">
+      <span *ngIf="Description?.hasError('required')">
+        El campo es requerido.
+      </span>
+    </div>
+    <div class="text-sm-left mb-2">
+      <button class="btn btn-link" type="submit" (click)="devolver()">Cancelar</button>
+    </div>
+    <div class="text-sm-right mb-2">
+      <button class="btn btn-primary" type="submit" (click)="addTask()" [disabled]="valForm.invalid">Guardar</button>
+    </div>
+  </form>
+</div>

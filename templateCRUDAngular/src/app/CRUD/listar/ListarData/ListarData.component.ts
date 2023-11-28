@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudService } from '../../services/crud.service';
 import { Router } from '@angular/router';
-import { BranchDetailOfficeDto, BranchOfficeDto } from '../../models/BranchOfficeDto';
+import { TaskDetailDto, TaskDto } from '../../models/TaskDto';
 import { ErrorDto } from 'src/utils/Response';
 
 @Component({
@@ -10,8 +10,9 @@ import { ErrorDto } from 'src/utils/Response';
   styleUrls: ['./ListarData.component.css']
 })
 export class ListarDataComponent implements OnInit {
-  Data?: BranchOfficeDto[];
-  currentData?: BranchDetailOfficeDto;
+
+  Data?: TaskDto[];
+  currentData?: TaskDetailDto;
   currentIndex = -1;
   constructor(private _crudService: CrudService,
     private router: Router) { }
@@ -20,7 +21,7 @@ export class ListarDataComponent implements OnInit {
     this.LoadData();
   }
   LoadData() {
-    this._crudService.getData().subscribe(
+    this._crudService.getListTasksOfUser().subscribe(
       {
         next: response => {
           this.Data = response.Data;
@@ -31,9 +32,8 @@ export class ListarDataComponent implements OnInit {
       }
     );
   }
-
-  deleteCurrent(BranchOfficeId?: string) {
-    this._crudService.softDelete(BranchOfficeId).subscribe(
+  completedTaskCurrent(taskId?: string) {
+    this._crudService.completedTask(taskId).subscribe(
       {
         next: response => {
           alert(response.Message);
@@ -50,12 +50,28 @@ export class ListarDataComponent implements OnInit {
       }
     );
   }
-  editCurrent(BranchOfficeId?: string) {
-    this.router.navigate(['/sucursales/actualizar/', BranchOfficeId]);
+
+  deleteCurrent(TaskId?: string) {
+    this._crudService.softDelete(TaskId).subscribe(
+      {
+        next: response => {
+          alert(response.Message);
+          this.currentIndex = -1;
+          this.LoadData();
+        },
+        error: err => {
+          const errors = err.error.Errors;
+          if (errors && errors.length > 0) {
+            const errorMessages = errors.map((x: ErrorDto) => x.Message).join("\n");
+            alert("Errores:\n" + errorMessages);
+          }
+        }
+      }
+    );
   }
 
-  setActiveData(current: BranchOfficeDto, index: number): void {
-    this._crudService.getDetailData(current.BranchOfficeId).subscribe(
+  setActiveData(current: TaskDto, index: number): void {
+    this._crudService.getDetailTaskIdOfUser(current.TaskId).subscribe(
       {
         next: response => {
           this.currentData = response.Data;

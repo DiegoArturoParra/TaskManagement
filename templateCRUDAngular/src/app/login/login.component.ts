@@ -1,50 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CrudService } from '../../services/crud.service';
+import { AccountService } from '../CRUD/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserRegisterDto } from '../../models/UserDto';
 import { ErrorDto } from 'src/utils/Response';
+import { TokenService } from '../CRUD/services/token.service';
 
 @Component({
-  selector: 'app-CreateUpdate',
-  templateUrl: './CreateUpdate.component.html',
-  styleUrls: ['./CreateUpdate.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class CreateUpdateComponent implements OnInit {
-
-  listaCurrencies!: UserRegisterDto[];
+export class LoginComponent implements OnInit {
   public valForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private _crudService: CrudService,
+    private _accountService: AccountService,
+    private _tokenService: TokenService,
     private router: Router, private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.valForm = this.fb.group({
-      Description: this.fb.control(null, [Validators.required]),
-      TaskName: this.fb.control(null, [Validators.required]),
+      Email: this.fb.control(null, [Validators.required, Validators.email]),
+      Password: this.fb.control(null, [Validators.required]),
     });
   }
 
-  get TaskName() {
-    return this.valForm.get('TaskName');
+  register() {
+    this.router.navigate(['/registrarse']);
   }
-
-  get Description() {
-    return this.valForm.get('Description');
-  }
-
-  devolver() {
-    this.router.navigate(['/gestion-tareas']);
-  }
-  addTask() {
-    this._crudService.create(this.valForm?.value).subscribe(
+  login() {
+    this._accountService.login(this.valForm?.value).subscribe(
       {
         next: response => {
           this.router.navigate(['/', 'gestion-tareas']).then(
             (nav) => {
-              alert(response.Message);
+              this._tokenService.setToken(response.Data.Token);
             },
           );
         },
@@ -57,5 +48,13 @@ export class CreateUpdateComponent implements OnInit {
         }
       }
     );
+  }
+
+  get Email() {
+    return this.valForm.get('Email');
+  }
+
+  get Password() {
+    return this.valForm.get('Password');
   }
 }

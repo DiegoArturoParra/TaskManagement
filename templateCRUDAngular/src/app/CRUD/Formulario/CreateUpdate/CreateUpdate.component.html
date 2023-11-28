@@ -1,37 +1,50 @@
-<div class="submit-form">
-  <form id="formulario" [formGroup]="valForm" class="needs-validation text-sm mt-4" novalidate>
-    <div class="form-group">
-      <label>Nombre</label>
-      <small class="text-danger" title="requerido"> (*)</small>
-      <label class="form-check-label text-muted">
-        Máximo 150 caracteres.
-      </label>
-      <input class="form-control form-control-sm" maxlength="150" formControlName="TaskName" />
-    </div>
-    <div class="text-danger" *ngIf="(TaskName?.dirty || TaskName?.touched) && !TaskName?.valid">
-      <span *ngIf="TaskName?.hasError('required')">
-        El campo es requerido.
-      </span>
-    </div>
-    <label for="Descpripcion" class="font-weight-bold">Descripción de la tarea</label>
-    <small class="text-danger mr-3" title="requerido"> (*)</small>
-    <label class="form-check-label text-muted">
-      Máximo 250 caracteres.
-    </label>
-    <div class="form-group">
-      <textarea class="form-control form-control-sm" formControlName="Description"
-        placeholder="ingrese la descripción de la tarea" maxlength="250"></textarea>
-    </div>
-    <div class="text-danger" *ngIf="(Description?.dirty || Description?.touched) && !Description?.valid">
-      <span *ngIf="Description?.hasError('required')">
-        El campo es requerido.
-      </span>
-    </div>
-    <div class="text-sm-left mb-2">
-      <button class="btn btn-link" type="submit" (click)="devolver()">Cancelar</button>
-    </div>
-    <div class="text-sm-right mb-2">
-      <button class="btn btn-primary" type="submit" (click)="addTask()" [disabled]="valForm.invalid">Guardar</button>
-    </div>
-  </form>
+<div class=" card submit-form">
+  <div class="card-body">
+    <form id="formulario" [formGroup]="valForm" class="needs-validation text-sm mt-4" novalidate>
+      <div class="form-group mb-3">
+        <label class="font-weight-bold">Nombre</label>
+        <small class="text-danger mr-3" title="requerido"> (*)</small>
+        <input class="form-control" maxlength="150" placeholder="ingrese el nombre de la tarea"
+          formControlName="TaskName" />
+        <label class="form-check-label text-muted">
+          Máximo 150 caracteres.
+        </label>
+        <div class="text-danger" *ngIf="(TaskName?.dirty || TaskName?.touched) && !TaskName?.valid">
+          <span *ngIf="TaskName?.hasError('required')">
+            El campo es requerido.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Descpripcion" class="font-weight-bold">Descripción de la tarea</label>
+        <small class="text-danger mr-3" title="requerido"> (*)</small>
+        <textarea class="form-control" formControlName="Description" placeholder="ingrese la descripción de la tarea"
+          maxlength="250"></textarea>
+        <label class="form-check-label text-muted">
+          Máximo 250 caracteres.
+        </label>
+        <div class="text-danger" *ngIf="(Description?.dirty || Description?.touched) && !Description?.valid">
+          <span *ngIf="Description?.hasError('required')">
+            El campo es requerido.
+          </span>
+        </div>
+      </div>
+
+      <div class="text-sm-right mb-2">
+        <button class="btn btn-link text-muted" type="submit" (click)="devolver()">Cancelar</button>
+      </div>
+      <div class="text-sm-center mb-2">
+        <button class="btn btn-success btn-block" type="submit" (click)="addTask()"
+          [disabled]="valForm.invalid">Guardar</button>
+      </div>
+      <div *ngIf="IsCreating">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando...</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

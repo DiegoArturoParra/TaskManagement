@@ -31,11 +31,18 @@
 
         </div>
         <div class="text-sm-right mb-2">
-          <button class="btn btn-link text-muted" type="submit" (click)="register()">Registrarse</button>
+          <button class="btn btn-link text-muted" type="button" (click)="register()">Registrarse</button>
         </div>
         <div class="text-sm-center mb-2">
           <button class="btn btn-info btn-block" type="submit" (click)="login()" [disabled]="valForm.invalid">Iniciar
             Sesión</button>
+        </div>
+        <div *ngIf="IsLogin">
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Iniciando sesión...</span>
+            </div>
+          </div>
         </div>
       </form>
     </div>

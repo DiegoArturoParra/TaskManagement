@@ -8,15 +8,16 @@
         </div>
       </div>
     </div>
+    <a class="m-3 btn btn-sm btn-dark" routerLink="/gestion-tareas/crear">
+      Registrar Tarea
+    </a>
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let obj of Data; let i = index" [class.active]="i == currentIndex"
         (click)="setActiveData(obj, i)">
         <h5>{{ obj.TaskName }} </h5>
+        <h6 class="{{obj.IsCompleted ? 'badge badge-pill badge-success': 'badge badge-pill badge-warning'}}">{{obj.TextCompleted}}</h6>
       </li>
     </ul>
-    <a class="m-3 btn btn-sm btn-dark" routerLink="/gestion-tareas/crear">
-      Registrar Sucursal
-    </a>
   </div>
   <div class="col-md-6">
     <div *ngIf="currentData?.TaskId">
@@ -36,7 +37,7 @@
           {{ currentData?.DateUpdatedString }}
         </label>
       </div>
-      <button type="submit" class="btn btn-primary btn-sm mr-4" (click)="completedTaskCurrent(currentData?.TaskId)">
+      <button type="submit" *ngIf="!currentData?.IsCompleted" class="btn btn-primary btn-sm mr-4" (click)="completedTaskCurrent(currentData?.TaskId)">
         Completar
       </button>
       <button type="submit" class="btn btn-danger btn-sm" (click)="deleteCurrent(currentData?.TaskId)">
@@ -57,7 +58,7 @@
           </div>
           <div *ngIf="Data.length == 0">
             <div class="text-center">
-              <strong>No tiene  tareas.</strong>
+              <strong>No tiene tareas.</strong>
             </div>
           </div>
         </div>

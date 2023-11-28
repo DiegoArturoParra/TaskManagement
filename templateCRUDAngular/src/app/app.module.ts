@@ -1,7 +1,7 @@
 import { CreateUpdateComponent } from './CRUD/Formulario/CreateUpdate/CreateUpdate.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -10,16 +10,17 @@ import { ListarDataComponent } from './CRUD/listar/ListarData/ListarData.compone
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PerfilUserComponent } from './perfil-user/perfil-user.component';
+import { JwtInterceptor } from 'src/utils/JwtInterceptor';
 
 @NgModule({
-  declarations: [			
+  declarations: [
     AppComponent,
     ListarDataComponent,
     CreateUpdateComponent,
-      LoginComponent,
-      RegisterComponent,
-      PerfilUserComponent
-   ],
+    LoginComponent,
+    RegisterComponent,
+    PerfilUserComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,7 +29,11 @@ import { PerfilUserComponent } from './perfil-user/perfil-user.component';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: JwtInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

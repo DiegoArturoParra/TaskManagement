@@ -14,6 +14,7 @@ export class CreateUpdateComponent implements OnInit {
 
   listaCurrencies!: UserRegisterDto[];
   public valForm!: FormGroup;
+  IsCreating: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _crudService: CrudService,
@@ -39,9 +40,11 @@ export class CreateUpdateComponent implements OnInit {
     this.router.navigate(['/gestion-tareas']);
   }
   addTask() {
+    this.IsCreating = true;
     this._crudService.create(this.valForm?.value).subscribe(
       {
         next: response => {
+          this.IsCreating = false;
           this.router.navigate(['/', 'gestion-tareas']).then(
             (nav) => {
               alert(response.Message);
@@ -49,6 +52,7 @@ export class CreateUpdateComponent implements OnInit {
           );
         },
         error: err => {
+          this.IsCreating = false;
           const errors = err.error.Errors;
           if (errors && errors.length > 0) {
             const errorMessages = errors.map((x: ErrorDto) => x.Message).join("\n");

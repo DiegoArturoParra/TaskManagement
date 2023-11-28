@@ -70,10 +70,10 @@ namespace TemplateCRUDNet7.Dtos
             return new ResponseDto<Unit>
             {
                 Data = Unit.Value,
-                Errors = new ImmutableArray<ErrorDto>()
-                {
-                    new ErrorDto(ex.Message)
-                },
+                Errors = new List<ErrorDto>()
+                        {
+                            new ErrorDto(ex.Message)
+                        },
                 Message = Message,
                 StatusCode = HttpStatusCode.InternalServerError
             };

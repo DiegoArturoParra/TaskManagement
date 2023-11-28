@@ -13,7 +13,7 @@ export class ListarDataComponent implements OnInit {
 
   Data?: TaskDto[];
   currentData?: TaskDetailDto;
-  currentIndex = -1;
+  currentIndex?= -1;
   constructor(private _crudService: CrudService,
     private router: Router) { }
 
@@ -39,6 +39,8 @@ export class ListarDataComponent implements OnInit {
           alert(response.Message);
           this.currentIndex = -1;
           this.LoadData();
+          let current = this.Data?.find(x => x.TaskId == taskId);
+          this.setActiveData(current, this.currentIndex);
         },
         error: err => {
           const errors = err.error.Errors;
@@ -58,6 +60,8 @@ export class ListarDataComponent implements OnInit {
           alert(response.Message);
           this.currentIndex = -1;
           this.LoadData();
+          let current = this.Data?.find(x => x.TaskId == TaskId);
+          this.setActiveData(current, this.currentIndex);
         },
         error: err => {
           const errors = err.error.Errors;
@@ -70,8 +74,8 @@ export class ListarDataComponent implements OnInit {
     );
   }
 
-  setActiveData(current: TaskDto, index: number): void {
-    this._crudService.getDetailTaskIdOfUser(current.TaskId).subscribe(
+  setActiveData(current?: TaskDto, index?: number): void {
+    this._crudService.getDetailTaskIdOfUser(current?.TaskId).subscribe(
       {
         next: response => {
           this.currentData = response.Data;

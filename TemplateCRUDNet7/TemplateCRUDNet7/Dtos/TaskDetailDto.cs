@@ -7,6 +7,8 @@ namespace TemplateCRUDNet7.Dtos
     {
         public Guid TaskId { get; set; }
         public string TaskName { get; set; }
+        public bool IsCompleted { get; set; }
+        public string TextCompleted => IsCompleted ? "Tarea completada." : "Tarea faltante.";
     }
     public class TaskDetailDto
     {

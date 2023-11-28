@@ -12,6 +12,7 @@ import { ErrorDto } from 'src/utils/Response';
 export class RegisterComponent implements OnInit {
 
   public valForm!: FormGroup;
+  IsRegister: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _accountService: AccountService,
@@ -30,16 +31,19 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/']);
   }
   register() {
+    this.IsRegister = true;
     this._accountService.register(this.valForm?.value).subscribe(
       {
         next: response => {
           this.router.navigate(['/']).then(
             (nav) => {
+              this.IsRegister = false;
               alert(response.Message);
             },
           );
         },
         error: err => {
+          this.IsRegister = false;
           const errors = err.error.Errors;
           if (errors && errors.length > 0) {
             const errorMessages = errors.map((x: ErrorDto) => x.Message).join("\n");

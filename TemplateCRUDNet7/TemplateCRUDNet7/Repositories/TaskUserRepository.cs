@@ -26,7 +26,8 @@ namespace TemplateCRUDNet7.Repositories
                 .Select(y => new TaskDto
                 {
                     TaskId = y.Id,
-                    TaskName = y.NameTask
+                    TaskName = y.NameTask,
+                    IsCompleted = y.IsCompleted
                 }).ToListAsync();
             return Responses.ResponseSuccess<IEnumerable<TaskDto>>(data);
         }
@@ -55,11 +56,11 @@ namespace TemplateCRUDNet7.Repositories
         {
             try
             {
+                var userId = _claimsHelper.GetUserId();
                 var entityTask = new Tasks
                 {
-
+                    UserId = userId,
                     Description = dto.Description.Trim(),
-
                     DateCreated = DateTime.Now,
                     IsCompleted = false,
                     NameTask = dto.TaskName,
